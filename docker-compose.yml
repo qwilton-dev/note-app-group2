@@ -1,0 +1,58 @@
+services:
+  nginx:
+      image: nginx:alpine
+      restart: unless-stopped
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - /root/cite/nginx/conf.d:/etc/nginx/conf.d:ro
+        - /root/cite/certbot/conf:/etc/letsencrypt:ro
+        - /root/cite/certbot/www:/var/www/certbot:ro
+      depends_on:
+        - backend
+        - frontend
+        - landing
+  backend:
+    build: ./backend
+    env_file: ./backend/.env
+    volumes:
+      - db_data:/app/data
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:////app/data/focusflow.db
+      - FRONTEND_URL=https://qwilton.skbx.ru/app/
+      - LANDING_URL=https://qwilton.skbx.ru
+      - BACKEND_URL=https://qwilton.skbx.ru
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_BACKEND_URL: https://qwilton.skbx.ru
+        VITE_LANDING_URL: https://qwilton.skbx.ru
+    restart: unless-stopped
+
+  landing:
+    build:
+      context: ./landing
+      args:
+        VITE_BACKEND_URL: https://qwilton.skbx.ru
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_certs:/etc/letsencrypt
+    entrypoint: >
+      sh -c "trap exit TERM;
+             while :; do
+               certbot renew --webroot -w /var/www/certbot --quiet;
+               sleep 12h & wait $${!};
+             done"
+
+volumes:
+  certbot_www:
+  certbot_certs:
+  db_data:
