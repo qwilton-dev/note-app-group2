@@ -1,0 +1,42 @@
+services:
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - backend
+      - frontend
+      - landing
+
+  backend:
+    build: ./backend
+    env_file: ./backend/.env
+    volumes:
+      - db_data:/app/data
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:////app/data/focusflow.db
+      - FRONTEND_URL=http://localhost/app/
+      - LANDING_URL=http://localhost
+      - BACKEND_URL=http://localhost
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_BACKEND_URL: http://localhost
+        VITE_LANDING_URL: http://localhost
+    restart: unless-stopped
+
+  landing:
+    build:
+      context: ./landing
+      args:
+        VITE_BACKEND_URL: http://localhost
+    restart: unless-stopped
+
+volumes:
+  db_data:

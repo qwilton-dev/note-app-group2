@@ -1,5 +1,6 @@
 certbot/
 backend/.env
+backend/venv
 backend/focusflow.db
 frontend/.env
 landing/.env

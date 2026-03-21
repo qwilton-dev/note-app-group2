@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse 
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from core.config import settings
@@ -28,3 +29,21 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(lists.router)
 app.include_router(tasks.router)
+
+@app.exception_handler(HTTPException)
+async def auth_exception_handler(request: Request, exc: HTTPException):
+    response = JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail},
+    )
+    
+    if exc.status_code == 401:
+        response.delete_cookie(
+            key="access_token",
+            path="/",
+            httponly=True,
+            samesite="lax",
+            # secure=False убрать для https/prod
+        )
+    
+    return response
