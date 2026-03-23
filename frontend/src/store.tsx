@@ -43,10 +43,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const updateTask = useCallback(async (id: string, updates: Partial<Task>) => {
-    const task = await api.updateTask(id, updates);
-    setTasks(prev => prev.map(t => t.id === id ? task : t));
-  }, []);
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
 
+    try {
+      const updatedTask = await api.updateTask(id, updates);
+      
+      setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
+    } catch (error) {
+      console.error("Ошибка при обновлении задачи:", error);
+    }
+  }, []);
   const deleteTask = useCallback(async (id: string) => {
     await api.deleteTask(id);
     setTasks(prev => prev.filter(t => t.id !== id));
