@@ -3,10 +3,26 @@ import { motion } from 'motion/react'
 import { loginUrl } from './config'
 
 const features = [
-  { icon: Sun, title: 'My Day', description: 'Focus on what matters today. Start fresh every morning.' },
-  { icon: Star, title: 'Important', description: 'Flag tasks that can\'t wait. Never lose sight of priorities.' },
-  { icon: Calendar, title: 'Planned', description: 'Schedule ahead with due dates and stay one step ahead.' },
-  { icon: LayoutDashboard, title: 'Dashboard', description: 'See your progress at a glance with live stats and insights.' },
+  { 
+    icon: Sun, 
+    title: 'Мой день', 
+    description: 'Сосредоточьтесь на важном сегодня. Начинайте каждое утро с чистого листа.' 
+  },
+  { 
+    icon: Star, 
+    title: 'Важное', 
+    description: 'Отмечайте задачи, которые не могут ждать. Никогда не теряйте приоритеты из виду.' 
+  },
+  { 
+    icon: Calendar, 
+    title: 'Запланировано', 
+    description: 'Планируйте дела заранее, устанавливайте сроки и будьте на шаг впереди.' 
+  },
+  { 
+    icon: LayoutDashboard, 
+    title: 'Дашборд', 
+    description: 'Следите за своим прогрессом с помощью живой статистики и аналитики.' 
+  },
 ]
 
 export default function App() {
@@ -21,7 +37,7 @@ export default function App() {
           href={loginUrl}
           className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
         >
-          Sign in
+          Войти
         </a>
       </header>
 
@@ -33,7 +49,7 @@ export default function App() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-card text-sm text-muted-foreground"
           >
             <CheckCircle2 className="w-4 h-4" />
-            Simple. Focused. Yours.
+            Просто. Сфокусированно. Ваше.
           </motion.div>
 
           <motion.h1
@@ -42,8 +58,8 @@ export default function App() {
             transition={{ delay: 0.1 }}
             className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight"
           >
-            Get things done,<br />
-            <span className="opacity-40">one day at a time.</span>
+            Делайте дела,<br />
+            <span className="opacity-40">день за днем.</span>
           </motion.h1>
 
           <motion.p
@@ -52,7 +68,7 @@ export default function App() {
             transition={{ delay: 0.2 }}
             className="text-lg text-muted-foreground max-w-xl"
           >
-            FocusFlow helps you organise your tasks, track your progress, and stay on top of your day — without the noise.
+            FocusFlow помогает организовывать задачи, отслеживать прогресс и контролировать свой день — без лишнего шума.
           </motion.p>
 
           <motion.a
@@ -63,7 +79,7 @@ export default function App() {
             className="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-base hover:opacity-90 transition-opacity shadow-lg"
           >
             <GoogleIcon />
-            Continue with Google
+            Продолжить через Google
           </motion.a>
         </section>
 
@@ -91,7 +107,7 @@ export default function App() {
       </main>
 
       <footer className="border-t border-border py-6 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} FocusFlow. All rights reserved.
+        © {new Date().getFullYear()} FocusFlow. Все права защищены.
       </footer>
     </div>
   )
