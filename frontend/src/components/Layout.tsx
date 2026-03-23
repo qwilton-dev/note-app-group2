@@ -15,11 +15,11 @@ interface LayoutProps {
 }
 
 const navItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'my-day', label: 'My Day', icon: Sun },
-  { id: 'important', label: 'Important', icon: Star },
-  { id: 'planned', label: 'Planned', icon: Calendar },
-  { id: 'tasks', label: 'Tasks', icon: Home },
+  { id: 'dashboard', label: 'Дашборд', icon: LayoutDashboard },
+  { id: 'my-day', label: 'Мой день', icon: Sun },
+  { id: 'important', label: 'Важное', icon: Star },
+  { id: 'planned', label: 'Запланировано', icon: Calendar },
+  { id: 'tasks', label: 'Задачи', icon: Home },
 ];
 
 export function Layout({ children, initialTheme, activeTab, setActiveTab, searchQuery, setSearchQuery }: LayoutProps) {
@@ -97,7 +97,7 @@ export function Layout({ children, initialTheme, activeTab, setActiveTab, search
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
-                  placeholder="Search tasks..."
+                  placeholder="Поиск задач..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-secondary border-none focus:ring-2 focus:ring-primary/20 rounded-xl pl-9 pr-4 py-2 text-sm"
@@ -159,7 +159,7 @@ export function Layout({ children, initialTheme, activeTab, setActiveTab, search
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search tasks..."
+              placeholder="Поиск задач..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-secondary border-none focus:ring-2 focus:ring-primary/20 rounded-xl pl-9 pr-4 py-2 text-sm transition-all"
@@ -250,7 +250,7 @@ export function Layout({ children, initialTheme, activeTab, setActiveTab, search
                 onBlur={() => {
                   if (!newListTitle.trim()) setIsAddingList(false);
                 }}
-                placeholder="New list name"
+                placeholder="Название списка"
                 className="w-full bg-secondary border-none focus:ring-2 focus:ring-primary/20 rounded-lg px-3 py-2 text-sm"
               />
             </form>
@@ -260,7 +260,7 @@ export function Layout({ children, initialTheme, activeTab, setActiveTab, search
               className="flex items-center gap-3 px-4 py-2.5 mt-2 rounded-xl hover:bg-secondary/50 text-muted-foreground hover:text-foreground transition-all duration-200 text-left text-sm font-medium"
             >
               <Plus className="w-5 h-5" />
-              New list
+              Новый список
             </button>
           )}
         </nav>
@@ -271,7 +271,7 @@ export function Layout({ children, initialTheme, activeTab, setActiveTab, search
             className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors w-full text-left text-sm font-medium"
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            {isDark ? 'Light Mode' : 'Dark Mode'}
+            {isDark ? 'Светлая тема' : 'Темная тема'}
           </button>
         </div>
       </aside>
