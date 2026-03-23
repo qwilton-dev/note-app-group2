@@ -1,20 +1,21 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useAppContext, Task } from '../store';
 import { isToday, isPast, isFuture, format } from 'date-fns';
-import { motion } from 'motion/react';
+import { ru } from 'date-fns/locale'; 
+import { motion } from 'framer-motion';
 import { Calendar as CalendarIcon, AlertCircle, TrendingUp, LayoutDashboard, ArrowRight } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { TaskDetail } from './TaskDetail';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence } from 'framer-motion';
 
 const quotes = [
-  "The secret of getting ahead is getting started. – Mark Twain",
-  "It always seems impossible until it's done. – Nelson Mandela",
-  "Don't watch the clock; do what it does. Keep going. – Sam Levenson",
-  "The future depends on what you do today. – Mahatma Gandhi",
-  "You don't have to be great to start, but you have to start to be great. – Zig Ziglar",
-  "Success is not final, failure is not fatal: it is the courage to continue that counts. – Winston Churchill",
-  "Believe you can and you're halfway there. – Theodore Roosevelt",
+  "Секрет того, чтобы вырваться вперед, — это начать. – Марк Твен",
+  "Все кажется невозможным, пока не будет сделано. – Нельсон Мандела",
+  "Не смотри на часы; делай то же, что и они. Просто иди вперед. – Сэм Левенсон",
+  "Будущее зависит от того, что вы делаете сегодня. – Махатма Ганди",
+  "Не обязательно быть великим, чтобы начать, но нужно начать, чтобы стать великим. – Зиг Зиглар",
+  "Успех не окончателен, неудача не фатальна: значение имеет лишь мужество продолжать. – Уинстон Черчилль",
+  "Поверь, что можешь, и ты уже на полпути. – Теодор Рузвельт",
 ];
 
 export function DashboardView() {
@@ -44,9 +45,9 @@ export function DashboardView() {
 
   const greeting = useMemo(() => {
     const h = new Date().getHours();
-    if (h < 12) return 'Good morning';
-    if (h < 18) return 'Good afternoon';
-    return 'Good evening';
+    if (h < 12) return 'Доброе утро';
+    if (h < 18) return 'Добрый день';
+    return 'Добрый вечер';
   }, []);
 
   const upcomingTasks = useMemo(() =>
@@ -63,7 +64,7 @@ export function DashboardView() {
         <header className="mt-4">
           <div className="flex items-center gap-3 text-3xl font-bold tracking-tight mb-6">
             <LayoutDashboard className="w-8 h-8" />
-            <h1>Dashboard</h1>
+            <h1>Дашборд</h1>
           </div>
           <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-4xl font-bold tracking-tight mb-3">
             {greeting}!
@@ -77,14 +78,14 @@ export function DashboardView() {
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="col-span-1 md:col-span-2 bg-card border border-border rounded-2xl p-6 flex flex-col justify-between shadow-sm">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h3 className="font-semibold text-foreground text-lg">Today's Progress</h3>
-                <p className="text-muted-foreground text-sm mt-1">{stats.todayCompleted} of {stats.todayTotal} tasks completed</p>
+                <h3 className="font-semibold text-foreground text-lg">Прогресс за сегодня</h3>
+                <p className="text-muted-foreground text-sm mt-1">{stats.todayCompleted} из {stats.todayTotal} задач выполнено</p>
               </div>
               <div className="p-3 bg-primary/10 rounded-xl"><TrendingUp className="w-6 h-6 text-primary" /></div>
             </div>
             <div className="space-y-3">
               <div className="flex justify-between text-sm font-medium text-foreground">
-                <span>Completion</span><span>{stats.progress}%</span>
+                <span>Завершено</span><span>{stats.progress}%</span>
               </div>
               <div className="h-3 w-full bg-secondary rounded-full overflow-hidden">
                 <motion.div initial={{ width: 0 }} animate={{ width: `${stats.progress}%` }} transition={{ duration: 1, ease: 'easeOut' }} className="h-full bg-primary rounded-full" />
@@ -94,24 +95,24 @@ export function DashboardView() {
 
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-card border border-border rounded-2xl p-6 flex flex-col justify-between shadow-sm">
             <div className="flex justify-between items-start">
-              <h3 className="font-semibold text-foreground">Overdue</h3>
+              <h3 className="font-semibold text-foreground">Просрочено</h3>
               <div className="p-2 bg-destructive/10 rounded-lg"><AlertCircle className="w-5 h-5 text-destructive" /></div>
             </div>
-            <div className="mt-6"><span className="text-4xl font-bold text-foreground">{stats.overdueCount}</span><span className="text-muted-foreground text-sm ml-2">tasks</span></div>
+            <div className="mt-6"><span className="text-4xl font-bold text-foreground">{stats.overdueCount}</span><span className="text-muted-foreground text-sm ml-2">задач</span></div>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }} className="bg-card border border-border rounded-2xl p-6 flex flex-col justify-between shadow-sm">
             <div className="flex justify-between items-start">
-              <h3 className="font-semibold text-foreground">Upcoming</h3>
+              <h3 className="font-semibold text-foreground">Предстоящие</h3>
               <div className="p-2 bg-secondary rounded-lg"><CalendarIcon className="w-5 h-5 text-muted-foreground" /></div>
             </div>
-            <div className="mt-6"><span className="text-4xl font-bold text-foreground">{stats.upcomingCount}</span><span className="text-muted-foreground text-sm ml-2">tasks</span></div>
+            <div className="mt-6"><span className="text-4xl font-bold text-foreground">{stats.upcomingCount}</span><span className="text-muted-foreground text-sm ml-2">задач</span></div>
           </motion.div>
         </div>
 
         {upcomingTasks.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-            <h3 className="text-lg font-semibold mb-4">Upcoming Tasks</h3>
+            <h3 className="text-lg font-semibold mb-4">Предстоящие задачи</h3>
             <div className="space-y-2">
               {upcomingTasks.map(task => (
                 <UpcomingTaskRow
@@ -151,7 +152,7 @@ function UpcomingTaskRow({ task, selected, onClick }: { task: Task; selected: bo
         {task.due_date && (
           <p className={cn('text-xs mt-1 flex items-center gap-1', isOverdue ? 'text-destructive' : 'text-muted-foreground')}>
             <CalendarIcon className="w-3 h-3" />
-            {format(new Date(task.due_date), 'EEE, MMM d')}
+            {format(new Date(task.due_date), 'eee, d MMM', { locale: ru })}
           </p>
         )}
       </div>
