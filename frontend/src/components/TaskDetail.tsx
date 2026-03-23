@@ -2,8 +2,9 @@ import React, { useState, useRef } from 'react';
 import { useAppContext, Task, Step } from '../store';
 import { Sun, Star, Calendar, CheckCircle2, Circle, Plus, Trash2, X } from 'lucide-react';
 import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import { cn } from '../lib/utils';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 interface TaskDetailProps {
   taskId: string;
@@ -33,7 +34,7 @@ export function TaskDetail({ taskId, onClose }: TaskDetailProps) {
       className="w-80 border-l border-border bg-card flex flex-col h-[calc(100vh-2rem)] sticky top-4 rounded-2xl shadow-sm overflow-hidden"
     >
       <div className="flex items-center justify-between p-4 border-b border-border">
-        <h3 className="font-semibold text-lg">Task Details</h3>
+        <h3 className="font-semibold text-lg">Детали задачи</h3>
         <button onClick={onClose} className="p-1 hover:bg-secondary rounded-lg transition-colors">
           <X className="w-5 h-5" />
         </button>
@@ -101,7 +102,7 @@ export function TaskDetail({ taskId, onClose }: TaskDetailProps) {
               type="text"
               value={newStepTitle}
               onChange={(e) => setNewStepTitle(e.target.value)}
-              placeholder="Add step"
+              placeholder="Добавить подзадачу"
               className="flex-1 bg-transparent border-none focus:ring-0 p-0 placeholder:text-muted-foreground"
             />
           </form>
@@ -118,7 +119,7 @@ export function TaskDetail({ taskId, onClose }: TaskDetailProps) {
             )}
           >
             <Sun className={cn('w-5 h-5', task.is_my_day && 'text-primary')} />
-            {task.is_my_day ? 'Added to My Day' : 'Add to My Day'}
+            {task.is_my_day ? 'Добавлено в Мой день' : 'Добавить в Мой день'}
             {task.is_my_day && (
               <X
                 className="w-4 h-4 ml-auto hover:bg-background rounded-sm"
@@ -135,7 +136,7 @@ export function TaskDetail({ taskId, onClose }: TaskDetailProps) {
             )}
           >
             <Star className={cn('w-5 h-5', task.is_important ? 'fill-primary text-primary' : '')} />
-            {task.is_important ? 'Marked as Important' : 'Mark as Important'}
+            {task.is_important ? 'Отмечено как важное' : 'Отметить как важное'}
             {task.is_important && (
               <X
                 className="w-4 h-4 ml-auto hover:bg-background rounded-sm"
@@ -155,13 +156,13 @@ export function TaskDetail({ taskId, onClose }: TaskDetailProps) {
         <textarea
           value={task.note || ''}
           onChange={(e) => updateTask(task.id, { note: e.target.value })}
-          placeholder="Add note"
+          placeholder="Добавить заметку"
           className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm resize-none min-h-[100px] placeholder:text-muted-foreground"
         />
       </div>
 
       <div className="p-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground bg-secondary/30">
-        <span>Created {format(new Date(task.created_at), 'MMM d')}</span>
+        <span>Создано {format(new Date(task.created_at), 'd MMM', { locale: ru })}</span>
         <button
           onClick={() => { deleteTask(task.id); onClose(); }}
           className="p-1.5 hover:bg-destructive/10 hover:text-destructive rounded-lg transition-colors"
@@ -195,7 +196,7 @@ function DueDatePicker({ value, onChange }: { value?: string; onChange: (date: s
         className={cn('flex-1 cursor-pointer', value && 'text-foreground')}
         onClick={() => inputRef.current?.showPicker()}
       >
-        {value ? `Due ${format(new Date(value), 'EEE, MMM d')}` : 'Add due date'}
+        {value ? `Срок: ${format(new Date(value), 'eee, d MMM', { locale: ru })}` : 'Добавить дату выполнения'}
       </span>
       <input ref={inputRef} type="date" value={toInputValue(value)} onChange={handleChange} className="sr-only" />
       {value && (
