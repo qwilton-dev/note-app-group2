@@ -3,4 +3,8 @@ backend/.env
 backend/venv
 backend/focusflow.db
 frontend/.env
+frontend/node_modules
 landing/.env
+landing/node_modules
+nginx/default.conf
+nginx/conf.d/default.conf
