@@ -3,6 +3,7 @@ import { AppProvider, useAppContext } from './store';
 import { Layout } from './components/Layout';
 import { TasksView } from './components/TasksView';
 import { DashboardView } from './components/DashboardView';
+import { RoadmapView } from './components/roadmap/RoadmapView';
 import { useAuth, AuthUser } from './lib/useAuth';
 
 function Inner({ user }: { user: AuthUser }) {
@@ -22,7 +23,9 @@ function Inner({ user }: { user: AuthUser }) {
     >
       {activeTab === 'dashboard'
         ? <DashboardView />
-        : <TasksView filterType={activeTab} searchQuery={searchQuery} />
+        : activeTab === 'roadmap'
+          ? <RoadmapView />
+          : <TasksView filterType={activeTab} searchQuery={searchQuery} />
       }
     </Layout>
   );

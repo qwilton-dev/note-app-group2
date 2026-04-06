@@ -20,6 +20,7 @@ const navItems = [
   { id: 'important', label: 'Важное', icon: Star },
   { id: 'planned', label: 'Запланировано', icon: Calendar },
   { id: 'tasks', label: 'Задачи', icon: Home },
+  { id: 'roadmap', label: 'Дорожные карты', icon: ListIcon },
 ];
 
 export function Layout({ children, initialTheme, activeTab, setActiveTab, searchQuery, setSearchQuery }: LayoutProps) {

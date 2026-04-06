@@ -8,9 +8,11 @@ interface AppState {
   lists: List[];
   loading: boolean;
   addTask: (data: Partial<Task>) => Promise<void>;
+  addTasks: (tasks: Task[]) => void;
   updateTask: (id: string, updates: Partial<Task>) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
   addList: (title: string) => Promise<void>;
+  addListDirect: (list: List) => void;
   updateList: (id: string, title: string) => Promise<void>;
   deleteList: (id: string) => Promise<void>;
   addStep: (taskId: string, title: string) => Promise<void>;
@@ -42,6 +44,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setTasks(prev => [task, ...prev]);
   }, []);
 
+  const addTasks = useCallback((newTasks: Task[]) => {
+    setTasks(prev => [...newTasks, ...prev]);
+  }, []);
+
   const updateTask = useCallback(async (id: string, updates: Partial<Task>) => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
 
@@ -60,6 +66,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const addList = useCallback(async (title: string) => {
     const list = await api.createList(title);
+    setLists(prev => [...prev, list]);
+  }, []);
+
+  const addListDirect = useCallback((list: List) => {
     setLists(prev => [...prev, list]);
   }, []);
 
@@ -96,8 +106,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider value={{
       tasks, lists, loading,
-      addTask, updateTask, deleteTask,
-      addList, updateList, deleteList,
+      addTask, addTasks, updateTask, deleteTask,
+      addList, addListDirect, updateList, deleteList,
       addStep, updateStep, deleteStep,
     }}>
       {children}

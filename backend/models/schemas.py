@@ -49,13 +49,15 @@ class TaskOut(BaseModel):
     completed_at: str | None
     created_at: datetime
     order: float
+    estimated_hours: float | None
     steps: list[StepOut]
 
     model_config = {"from_attributes": True}
 
     @classmethod
-    def from_orm_safe(cls, task) -> 'TaskOut':
-        steps = task.__dict__.get('steps') or []
+    def from_orm_safe(cls, task) -> "TaskOut":
+        raw = task.__dict__.get("steps", [])
+        steps = raw if isinstance(raw, list) else (list(task.steps) if task.steps is not None else [])
         return cls(
             id=task.id,
             user_id=task.user_id,
@@ -69,6 +71,7 @@ class TaskOut(BaseModel):
             completed_at=task.completed_at,
             created_at=task.created_at,
             order=task.order,
+            estimated_hours=task.estimated_hours,
             steps=[StepOut.model_validate(s) for s in steps],
         )
 
@@ -79,6 +82,7 @@ class TaskCreateIn(BaseModel):
     is_important: bool = False
     is_my_day: bool = False
     due_date: str | None = None
+    estimated_hours: float | None = None
 
 
 class TaskUpdateIn(BaseModel):
@@ -91,6 +95,7 @@ class TaskUpdateIn(BaseModel):
     note: str | None = None
     completed_at: str | None = None
     order: float | None = None
+    estimated_hours: float | None = None
 
 
 class ListOut(BaseModel):
@@ -107,3 +112,64 @@ class ListCreateIn(BaseModel):
 
 class ListUpdateIn(BaseModel):
     title: str
+
+
+class RoadmapGenerateOut(BaseModel):
+    tasks: list[TaskOut]
+    list: ListOut
+
+    model_config = {"from_attributes": True}
+
+
+class RoadmapChatMessageIn(BaseModel):
+    role: str
+    content: str
+
+
+class RoadmapChatIn(BaseModel):
+    messages: list[RoadmapChatMessageIn]
+
+
+class RoadmapPlanTask(BaseModel):
+    title: str
+    subtasks: list[str] = []
+
+
+class RoadmapChatOut(BaseModel):
+    status: str  # "clarify" | "plan"
+    message: str
+    plan: list[RoadmapPlanTask] | None = None
+
+
+class RoadmapConfirmIn(BaseModel):
+    goal: str
+    plan: list[RoadmapPlanTask]
+
+class RoadmapOut(BaseModel):
+    id: str
+    user_id: str
+    goal: str
+    context: str | None
+    is_completed: bool
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class RoadmapCreateIn(BaseModel):
+    goal: str
+    context: str | None = None
+
+
+class RoadmapUpdateIn(BaseModel):
+    goal: str | None = None
+    context: str | None = None
+    is_completed: bool | None = None
+
+
+class RoadmapGenerateIn(BaseModel):
+    goal: str
+    context: str | None = None
+    max_depth: int = 3
+    include_deadlines: bool = False

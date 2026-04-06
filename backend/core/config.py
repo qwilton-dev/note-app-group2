@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     jwt_secret_key: str
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60 * 24 * 7
+    openrouter_api_key: str = ""  # Optional, for AI features
 
     frontend_url: str = "http://localhost:3000"
     landing_url: str = "http://localhost:5173"
